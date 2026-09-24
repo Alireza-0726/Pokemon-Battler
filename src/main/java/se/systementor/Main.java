@@ -26,7 +26,7 @@ public class Main {
 
             switch (choice) {
                 case 1 -> visaAlla (pokedex);
-                case 2 -> läggTill(scanner, pokedex);
+                case 2 -> laggTill(scanner, pokedex);
                 case 3 -> System.out.println("Den här funktionen är inte färdig än");
                 case 4 -> System.out.println("Den här funktionen är inte färdig än");
                 case 5 -> System.out.println("Den här funktionen är inte färdig än");
@@ -52,7 +52,7 @@ public class Main {
         }
     }
 
-    public static void läggTill(Scanner scanner, ArrayList<Pokemon> pokedex) {
+    public static void laggTill(Scanner scanner, ArrayList<Pokemon> pokedex) {
         System.out.println("--- Skapa ny pokemon ---");
         String name = InputHelper.readNonEmptyString(scanner, "Ange namn på pokemonen: ");
         Type type = InputHelper.readType(scanner, "Ange typ (FIRE, WATER, GRASS, ELECTRIC, NORMAL): ");

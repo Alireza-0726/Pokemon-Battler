@@ -45,4 +45,13 @@ public class InputHelper {
         }
     }
 
+    public static Attack readAttack(Scanner scanner) {
+        System.out.println(" -- Ny attack -- ");
+        String name = readNonEmptyString(scanner, " Attackens namn: ");
+        int baseDamage = readIntInRange(scanner, " Basskada (1-200): ", 1, 200);
+        int accuracy = readIntInRange(scanner, " Träffsäkerhet (1-100): ", 1, 100);
+        Type type = readType(scanner, "Typ: ");
+        return new Attack(name, baseDamage, accuracy, type);
+    }
+
 }
