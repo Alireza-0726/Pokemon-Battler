@@ -1,4 +1,9 @@
 package se.systementor;
 
-public class Type {
+public enum Type {
+    FIRE,
+    WATER,
+    GRASS,
+    ELECTRIC,
+    NORMAL
 }
