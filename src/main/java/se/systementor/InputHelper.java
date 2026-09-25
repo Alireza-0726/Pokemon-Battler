@@ -55,7 +55,7 @@ public class InputHelper {
         return new Attack(name, baseDamage, accuracy, type);
     }
 
-    public static int valjPokemonIndex(Scanner scanner, ArrayList<Pokemon> pokedex) {
+    public static int selectPokemonIndex(Scanner scanner, ArrayList<Pokemon> pokedex) {
         for (int i = 0; i < pokedex.size(); i++) {
             System.out.println((i + 1) + ". " + pokedex.get(i).name);
         }

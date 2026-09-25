@@ -24,7 +24,7 @@ public class Main {
             System.out.println("\n---- HUVUDMENY ----");
             System.out.println("1. Visa hela pokedexen");
             System.out.println("2. Skapa ny pokemon");
-            System.out.println("3. Andra info om pokemon");
+            System.out.println("3. Ändra info om pokemon");
             System.out.println("4. Radera pokemon");
             System.out.println("5. Spara till textfil");
             System.out.println("6. Läs in från textfil");
@@ -34,10 +34,10 @@ public class Main {
             int choice = InputHelper.readIntInRange(scanner, "Ditt menyval: ",1, 8);
 
             switch (choice) {
-                case 1 -> visaAlla (pokedex);
-                case 2 -> laggTill(scanner, pokedex);
-                case 3 -> redigera(scanner, pokedex);
-                case 4 -> taBort(scanner, pokedex);
+                case 1 -> showAll(pokedex);
+                case 2 -> add(scanner, pokedex);
+                case 3 -> edit(scanner, pokedex);
+                case 4 -> remove(scanner, pokedex);
                 case 5 -> save(pokedex);
                 case 6 -> load(pokedex);
                 case 7 -> {
@@ -55,7 +55,7 @@ public class Main {
         scanner.close();
     }
 
-    public static void visaAlla  (ArrayList<Pokemon> pokedex) {
+    public static void showAll  (ArrayList<Pokemon> pokedex) {
         if (pokedex.isEmpty()) {
             System.out.println("Pokedexen har inga pokemons än.");
             return;
@@ -65,7 +65,7 @@ public class Main {
         }
     }
 
-    public static void laggTill(Scanner scanner, ArrayList<Pokemon> pokedex) {
+    public static void add(Scanner scanner, ArrayList<Pokemon> pokedex) {
         System.out.println("--- Skapa ny pokemon ---");
         String name = InputHelper.readNonEmptyString(scanner, "Ange namn på pokemonen: ");
         Type type = InputHelper.readType(scanner, "Ange typ (FIRE, WATER, GRASS, ELECTRIC, NORMAL): ");
@@ -73,9 +73,9 @@ public class Main {
 
         Pokemon p = new Pokemon(name, type, maxHp);
 
-        int antalAttacker = InputHelper.readIntInRange(scanner, "Hur många attacker (1-4)? ", 1, 4);
-        for (int i = 0; i < antalAttacker; i++) {
-            System.out.println("Attack " + (i + 1) + " av " + antalAttacker + ":");
+        int numAttacks = InputHelper.readIntInRange(scanner, "Hur många attacker (1-4)? ", 1, 4);
+        for (int i = 0; i < numAttacks; i++) {
+            System.out.println("Attack " + (i + 1) + " av " + numAttacks + ":");
             Attack a = InputHelper.readAttack(scanner);
             p.attacks.add(a);
         }
@@ -84,38 +84,38 @@ public class Main {
         System.out.println(name + " lades till i pokedexen");
     }
 
-    public static void taBort(Scanner scanner, ArrayList<Pokemon> pokedex) {
+    public static void remove(Scanner scanner, ArrayList<Pokemon> pokedex) {
         if (pokedex.isEmpty()) {
             System.out.println("Inget att radera, pokedexen är tom.");
             return;
         }
         System.out.println("--- Radera pokemon ---");
-        int index = InputHelper.valjPokemonIndex(scanner, pokedex);
-        String namn = pokedex.get(index).name;
+        int index = InputHelper.selectPokemonIndex(scanner, pokedex);
+        String name = pokedex.get(index).name;
         pokedex.remove(index);
-        System.out.println(namn + " togs bort från pokedexen.");
+        System.out.println(name + " togs bort från pokedexen.");
     }
 
-    public static void redigera(Scanner scanner, ArrayList<Pokemon> pokedex) {
+    public static void edit(Scanner scanner, ArrayList<Pokemon> pokedex) {
         if (pokedex.isEmpty()) {
             System.out.println("Inget att redigera, pokedexen är tom.");
             return;
         }
         System.out.println("--- Redigera pokemon ---");
-        int index = InputHelper.valjPokemonIndex(scanner, pokedex);
+        int index = InputHelper.selectPokemonIndex(scanner, pokedex);
         Pokemon p = pokedex.get(index);
 
         System.out.println("Vald pokemon: " + p.toDisplayString());
-        String nyttNamn = InputHelper.readNonEmptyString(scanner, "Nytt namn: ");
-        p.name = nyttNamn;
+        String newName = InputHelper.readNonEmptyString(scanner, "Nytt namn: ");
+        p.name = newName;
         System.out.println("Namnet uppdaterat!");
 
-        Type nyType = InputHelper.readType(scanner, "Ny typ (FIRE, WATER, GRASS, ELECTRIC, NORMAL): ");
-        p.type = nyType;
+        Type newType = InputHelper.readType(scanner, "Ny typ (FIRE, WATER, GRASS, ELECTRIC, NORMAL): ");
+        p.type = newType;
         System.out.println("Typen uppdaterad!");
 
-        int nyttHp = InputHelper.readIntInRange(scanner, "Nytt max HP: ", 1, 1000);
-        p.maxHp = nyttHp;
+        int newHp = InputHelper.readIntInRange(scanner, "Nytt max HP: ", 1, 1000);
+        p.maxHp = newHp;
         if (p.currentHp > p.maxHp) {
             p.currentHp = p.maxHp;
         }
@@ -123,8 +123,8 @@ public class Main {
 
         System.out.println("Nuvarande attacker: " + p.attacks.size());
         if (p.attacks.size() < 4) {
-            String svar = InputHelper.readNonEmptyString(scanner, "Vill du lägga till en attack? (ja/nej):  ");
-            if (svar.equalsIgnoreCase("ja")) {
+            String answer = InputHelper.readNonEmptyString(scanner, "Vill du lägga till en attack? (ja/nej):  ");
+            if (answer.equalsIgnoreCase("ja")) {
                 Attack nyAttack = InputHelper.readAttack(scanner);
                 p.attacks.add(nyAttack);
                 System.out.println("Attacken tillagd!");
@@ -134,16 +134,16 @@ public class Main {
         }
 
         if (p.attacks.size() > 1) {
-            String svar2 = InputHelper.readNonEmptyString(scanner, "Vill du ta bort en attack? (ja/nej):  ");
-            if (svar2.equalsIgnoreCase("ja")) {
+            String answer2 = InputHelper.readNonEmptyString(scanner, "Vill du ta bort en attack? (ja/nej):  ");
+            if (answer2.equalsIgnoreCase("ja")) {
                 System.out.println("Vilken attack vill du ta bort?");
                 for (int i = 0; i < p.attacks.size(); i++) {
                     System.out.println((i + 1) + ". " + p.attacks.get(i).name);
                 }
                 int attackIndex = InputHelper.readIntInRange(scanner, "Välj nummer: ", 1, p.attacks.size()) - 1;
-                String borttagen = p.attacks.get(attackIndex).name;
+                String removedName = p.attacks.get(attackIndex).name;
                 p.attacks.remove(attackIndex);
-                System.out.println(borttagen + " togs bort.");
+                System.out.println(removedName + " togs bort.");
             }
         } else  {
             System.out.println("Pokemonen måste ha minst 1 attack.");
@@ -223,42 +223,42 @@ public class Main {
         }
 
         try {
-            ArrayList<String> rader = new ArrayList<>(Files.readAllLines(path));
+            ArrayList<String> lines = new ArrayList<>(Files.readAllLines(path));
             pokedex.clear();
 
-            for (String rad : rader) {
-                if (rad.isBlank()) continue;
+            for (String line : lines) {
+                if (line.isBlank()) continue;
 
-                String[] falt = rad.split(";");
-                if (falt.length !=5) continue;
+                String[] fields = line.split(";");
+                if (fields.length !=5) continue;
 
                 try {
-                    String namn = falt[0];
-                    Type type = Type.valueOf(falt[1]);
-                    int maxHp = Integer.parseInt(falt[2]);
-                    int currentHp = Integer.parseInt(falt[3]);
+                    String name = fields[0];
+                    Type type = Type.valueOf(fields[1]);
+                    int maxHp = Integer.parseInt(fields[2]);
+                    int currentHp = Integer.parseInt(fields[3]);
 
-                    Pokemon p = new Pokemon(namn, type, maxHp);
+                    Pokemon p = new Pokemon(name, type, maxHp);
                     p.currentHp = currentHp;
 
-                    if (!falt[4].isEmpty()) {
-                        String[] attacker = falt[4].split("\\|");
-                        for (String atk : attacker) {
-                            String[] atkFalt = atk.split(",");
-                            if (atkFalt.length !=4) continue;
+                    if (!fields[4].isEmpty()) {
+                        String[] attacks = fields[4].split("\\|");
+                        for (String atk : attacks) {
+                            String[] atkFields = atk.split(",");
+                            if (atkFields.length !=4) continue;
 
-                            String atkNamn = atkFalt[0];
-                            int dmg = Integer.parseInt(atkFalt[1]);
-                            int acc =  Integer.parseInt(atkFalt[2]);
-                            Type atkType = Type.valueOf(atkFalt[3]);
+                            String atkName = atkFields[0];
+                            int dmg = Integer.parseInt(atkFields[1]);
+                            int acc =  Integer.parseInt(atkFields[2]);
+                            Type atkType = Type.valueOf(atkFields[3]);
 
-                            p.attacks.add(new Attack(atkNamn, dmg, acc, atkType));
+                            p.attacks.add(new Attack(atkName, dmg, acc, atkType));
                         }
                     }
 
                     pokedex.add(p);
                 } catch (IllegalArgumentException e) {
-                    System.out.println("Hoppar över trasig rad: " + rad);
+                    System.out.println("Hoppar över trasig rad: " + line);
                 }
             }
 
