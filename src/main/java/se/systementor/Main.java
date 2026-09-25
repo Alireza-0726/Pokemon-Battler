@@ -28,7 +28,7 @@ public class Main {
                 case 1 -> visaAlla (pokedex);
                 case 2 -> laggTill(scanner, pokedex);
                 case 3 -> System.out.println("Den här funktionen är inte färdig än");
-                case 4 -> System.out.println("Den här funktionen är inte färdig än");
+                case 4 -> taBort(scanner, pokedex);
                 case 5 -> System.out.println("Den här funktionen är inte färdig än");
                 case 6 -> System.out.println("Den här funktionen är inte färdig än");
                 case 7 -> System.out.println("Den här funktionen är inte färdig än");
@@ -69,5 +69,17 @@ public class Main {
 
         pokedex.add(p);
         System.out.println(name + " lades till i pokedexen");
+    }
+
+    public static void taBort(Scanner scanner, ArrayList<Pokemon> pokedex) {
+        if (pokedex.isEmpty()) {
+            System.out.println("Inget att radera, pokedexen är tom.");
+            return;
+        }
+        System.out.println("--- Radera pokemon ---");
+        int index = InputHelper.valjPokemonIndex(scanner, pokedex);
+        String namn = pokedex.get(index).name;
+        pokedex.remove(index);
+        System.out.println(namn + " togs bort från pokedexen.");
     }
 }
