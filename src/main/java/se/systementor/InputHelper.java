@@ -1,6 +1,7 @@
 package se.systementor;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class InputHelper {
 
@@ -52,6 +53,13 @@ public class InputHelper {
         int accuracy = readIntInRange(scanner, " Träffsäkerhet (1-100): ", 1, 100);
         Type type = readType(scanner, "Typ: ");
         return new Attack(name, baseDamage, accuracy, type);
+    }
+
+    public static int valjPokemonIndex(Scanner scanner, ArrayList<Pokemon> pokedex) {
+        for (int i = 0; i < pokedex.size(); i++) {
+            System.out.println((i + 1) + ". " + pokedex.get(i).name);
+        }
+        return readIntInRange(scanner, "Välj nummer: ", 1, pokedex.size()) - 1;
     }
 
 }
