@@ -31,7 +31,10 @@ public class Main {
                 case 4 -> taBort(scanner, pokedex);
                 case 5 -> System.out.println("Den här funktionen är inte färdig än");
                 case 6 -> System.out.println("Den här funktionen är inte färdig än");
-                case 7 -> System.out.println("Den här funktionen är inte färdig än");
+                case 7 -> {
+                    seedData(pokedex);
+                    System.out.println("Standardpokedexen återställd!");
+                }
                 case 8 -> {
                     System.out.println("Hej då, välkommen åter!");
                     running = false;
