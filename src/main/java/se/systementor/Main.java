@@ -136,4 +136,38 @@ public class Main {
             System.out.println("Pokemonen måste ha minst 1 attack.");
         }
     }
+
+    public static void seedData(ArrayList<Pokemon> pokedex) {
+        pokedex.clear();
+
+        Pokemon p1 = new Pokemon("Charizard", Type.FIRE, 78);
+        p1.attacks.add(new Attack("Flamethrower", 90, 100, Type.FIRE));
+        p1.attacks.add(new Attack("Wing Attack", 60, 100, Type.NORMAL));
+        pokedex.add(p1);
+
+        Pokemon p2 = new Pokemon("Blastoise", Type.WATER, 79);
+        p2.attacks.add(new Attack("Hydro Pump", 110, 80, Type.WATER));
+        p2.attacks.add(new Attack("Bite", 60, 100, Type.NORMAL));
+        pokedex.add(p2);
+
+        Pokemon p3 = new Pokemon("Venusaur", Type.GRASS, 80);
+        p3.attacks.add(new Attack("Solar Beam", 120, 85, Type.GRASS));
+        p3.attacks.add(new Attack("Vine Whip", 45, 100, Type.GRASS));
+        pokedex.add(p3);
+
+        Pokemon p4 = new Pokemon("Pikachu", Type.ELECTRIC, 35);
+        p4.attacks.add(new Attack("Thunderbolt", 90, 100, Type.ELECTRIC));
+        p4.attacks.add(new Attack("Quick Attack", 40, 100, Type.NORMAL));
+        pokedex.add(p4);
+
+        Pokemon p5 = new Pokemon("Snorlax", Type.NORMAL, 160);
+        p5.attacks.add(new Attack("Body Slam", 85, 100, Type.NORMAL));
+        p5.attacks.add(new Attack("Rest", 1, 100, Type.NORMAL));
+        pokedex.add(p5);
+
+        Pokemon p6 = new Pokemon("Gengar", Type.NORMAL, 60);
+        p6.attacks.add(new Attack("Shadow Ball", 80, 100, Type.NORMAL));
+        p6.attacks.add(new Attack("Lick", 30, 100, Type.NORMAL));
+        pokedex.add(p6);
+    }
 }
