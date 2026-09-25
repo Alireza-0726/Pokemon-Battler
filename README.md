@@ -21,11 +21,6 @@ En konsolapplikation i java för att hantera en samling pokemon. Byggd som inlä
 3. Höger klicka på `src/main/java/se/systementor/Main.java`
 4. Välj "Run 'Main.main()'"
 
-### Med Maven från terminalen
-\`\`\`
-mvn compile exec:java -Dexec.mainClass="se.systementor.Main"
-\`\`\`
-
 ## Projektstruktur
 - `src/main/java/se/systementor/` - all källkod
 - `Main.java` - meny och programflöde
@@ -36,7 +31,7 @@ mvn compile exec:java -Dexec.mainClass="se.systementor.Main"
 - `pokedex.csv` - sparad data (skapas automatiskt vid första sparning)
 
 ## Exempel på användning
-\`\`\`
+```
 ---- HUVUDMENY ----
 1. Visa hela pokedexen
 2. Skapa ny pokemon
@@ -46,6 +41,7 @@ mvn compile exec:java -Dexec.mainClass="se.systementor.Main"
 6. läs in från textfil
 7. Återställ standardpokedex
 8. Avsluta programmet
+
 Ditt menyval: 2
 --- Skapa ny pokemon ---
 Ange namn på pokemonen: Charizard
@@ -53,7 +49,7 @@ Ange typ (FIRE, WATER, GRASS, ELECTRIC, NORMAL): fire
 Ange maximalt HP: 78
 Hur många attacker (1-4)? 2
 ...
-\`\`\`
+```
 
 ## Teknisk info
 - Java 21
