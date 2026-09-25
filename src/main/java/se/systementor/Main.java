@@ -14,6 +14,11 @@ public class Main {
         boolean running = true;
 
         System.out.println("Hej och välkommen till pokedex!");
+        load(pokedex);
+        if (pokedex.isEmpty()) {
+            seedData(pokedex);
+            System.out.println("Första körningen, standardpokedex laddat.");
+        }
 
         while (running) {
             System.out.println("\n---- HUVUDMENY ----");
@@ -40,6 +45,7 @@ public class Main {
                     System.out.println("Standardpokedexen återställd!");
                 }
                 case 8 -> {
+                    save(pokedex);
                     System.out.println("Hej då, välkommen åter!");
                     running = false;
                 }
