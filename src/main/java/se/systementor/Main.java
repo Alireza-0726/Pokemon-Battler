@@ -107,5 +107,17 @@ public class Main {
             p.currentHp = p.maxHp;
         }
         System.out.println("HP uppdaterat!");
+
+        System.out.println("Nuvarande attacker: " + p.attacks.size());
+        if (p.attacks.size() < 4) {
+            String svar = InputHelper.readNonEmptyString(scanner, "Vill du lägga till en attack? (ja/nej):  ");
+            if (svar.equalsIgnoreCase("ja")) {
+                Attack nyAttack = InputHelper.readAttack(scanner);
+                p.attacks.add(nyAttack);
+                System.out.println("Attacken tillagd!");
+            }
+        } else {
+            System.out.println("Pokemonen har redan 4 attacker (max).");
+        }
     }
 }
