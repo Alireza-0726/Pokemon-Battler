@@ -2,6 +2,10 @@ package se.systementor;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.io.IOException;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -29,7 +33,7 @@ public class Main {
                 case 2 -> laggTill(scanner, pokedex);
                 case 3 -> redigera(scanner, pokedex);
                 case 4 -> taBort(scanner, pokedex);
-                case 5 -> System.out.println("Den här funktionen är inte färdig än");
+                case 5 -> save(pokedex);
                 case 6 -> System.out.println("Den här funktionen är inte färdig än");
                 case 7 -> {
                     seedData(pokedex);
@@ -172,5 +176,35 @@ public class Main {
         p6.attacks.add(new Attack("Shadow Ball", 80, 100, Type.NORMAL));
         p6.attacks.add(new Attack("Lick", 30, 100, Type.NORMAL));
         pokedex.add(p6);
+    }
+
+    public static void save(ArrayList<Pokemon> pokedex) {
+        Path path = Path.of("pokedex.csv");
+        StringBuilder sb = new StringBuilder();
+
+        for (Pokemon p : pokedex) {
+            sb.append(p.name).append(";");
+            sb.append(p.type).append(";");
+            sb.append(p.maxHp).append(";");
+            sb.append(p.currentHp).append(";");
+
+            for (int i  = 0; i < p.attacks.size(); i++) {
+                Attack a = p.attacks.get(i);
+                if (i > 0) sb.append("|");
+                sb.append(a.name).append(",")
+                        .append(a.baseDamage).append(",")
+                        .append(a.accuracy).append(",")
+                        .append(a.type);
+
+            }
+            sb.append("\n");
+        }
+
+        try {
+            Files.writeString(path, sb.toString());
+            System.out.println("Sparat till: " + path.toAbsolutePath());
+        } catch (IOException e) {
+            System.out.println("Kunde inte spara: " + e.getMessage());
+        }
     }
 }
