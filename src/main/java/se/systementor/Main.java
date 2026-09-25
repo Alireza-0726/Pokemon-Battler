@@ -34,7 +34,7 @@ public class Main {
                 case 3 -> redigera(scanner, pokedex);
                 case 4 -> taBort(scanner, pokedex);
                 case 5 -> save(pokedex);
-                case 6 -> System.out.println("Den här funktionen är inte färdig än");
+                case 6 -> load(pokedex);
                 case 7 -> {
                     seedData(pokedex);
                     System.out.println("Standardpokedexen återställd!");
@@ -205,6 +205,60 @@ public class Main {
             System.out.println("Sparat till: " + path.toAbsolutePath());
         } catch (IOException e) {
             System.out.println("Kunde inte spara: " + e.getMessage());
+        }
+    }
+
+    public static void load(ArrayList<Pokemon> pokedex) {
+        Path path = Path.of("pokedex.csv");
+
+        if (!Files.exists(path)) {
+            System.out.println("Ingen sparad fil hittades.");
+            return;
+        }
+
+        try {
+            ArrayList<String> rader = new ArrayList<>(Files.readAllLines(path));
+            pokedex.clear();
+
+            for (String rad : rader) {
+                if (rad.isBlank()) continue;
+
+                String[] falt = rad.split(";");
+                if (falt.length !=5) continue;
+
+                try {
+                    String namn = falt[0];
+                    Type type = Type.valueOf(falt[1]);
+                    int maxHp = Integer.parseInt(falt[2]);
+                    int currentHp = Integer.parseInt(falt[3]);
+
+                    Pokemon p = new Pokemon(namn, type, maxHp);
+                    p.currentHp = currentHp;
+
+                    if (!falt[4].isEmpty()) {
+                        String[] attacker = falt[4].split("\\|");
+                        for (String atk : attacker) {
+                            String[] atkFalt = atk.split(",");
+                            if (atkFalt.length !=4) continue;
+
+                            String atkNamn = atkFalt[0];
+                            int dmg = Integer.parseInt(atkFalt[1]);
+                            int acc =  Integer.parseInt(atkFalt[2]);
+                            Type atkType = Type.valueOf(atkFalt[3]);
+
+                            p.attacks.add(new Attack(atkNamn, dmg, acc, atkType));
+                        }
+                    }
+
+                    pokedex.add(p);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Hoppar över trasig rad: " + rad);
+                }
+            }
+
+            System.out.println("Laddat " + pokedex.size() + " pokemons från fil.");
+        } catch (IOException e) {
+            System.out.println("Kunde inte läsa filen: " + e.getMessage());
         }
     }
 }
