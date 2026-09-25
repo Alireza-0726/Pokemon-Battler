@@ -59,6 +59,14 @@ public class Main {
         int maxHp = InputHelper.readIntInRange(scanner, "Ange maximalt HP: ", 1, 1000);
 
         Pokemon p = new Pokemon(name, type, maxHp);
+
+        int antalAttacker = InputHelper.readIntInRange(scanner, "Hur många attacker (1-4)? ", 1, 4);
+        for (int i = 0; i < antalAttacker; i++) {
+            System.out.println("Attack " + (i + 1) + " av " + antalAttacker + ":");
+            Attack a = InputHelper.readAttack(scanner);
+            p.attacks.add(a);
+        }
+
         pokedex.add(p);
         System.out.println(name + " lades till i pokedexen");
     }
