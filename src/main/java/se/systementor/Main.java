@@ -119,5 +119,21 @@ public class Main {
         } else {
             System.out.println("Pokemonen har redan 4 attacker (max).");
         }
+
+        if (p.attacks.size() > 1) {
+            String svar2 = InputHelper.readNonEmptyString(scanner, "Vill du ta bort en attack? (ja/nej):  ");
+            if (svar2.equalsIgnoreCase("ja")) {
+                System.out.println("Vilken attack vill du ta bort?");
+                for (int i = 0; i < p.attacks.size(); i++) {
+                    System.out.println((i + 1) + ". " + p.attacks.get(i).name);
+                }
+                int attackIndex = InputHelper.readIntInRange(scanner, "Välj nummer: ", 1, p.attacks.size()) - 1;
+                String borttagen = p.attacks.get(attackIndex).name;
+                p.attacks.remove(attackIndex);
+                System.out.println(borttagen + " togs bort.");
+            }
+        } else  {
+            System.out.println("Pokemonen måste ha minst 1 attack.");
+        }
     }
 }
