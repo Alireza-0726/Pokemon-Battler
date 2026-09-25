@@ -96,5 +96,9 @@ public class Main {
         String nyttNamn = InputHelper.readNonEmptyString(scanner, "Nytt namn: ");
         p.name = nyttNamn;
         System.out.println("Namnet uppdaterat!");
+
+        Type nyType = InputHelper.readType(scanner, "Ny typ (FIRE, WATER, GRASS, ELECTRIC, NORMAL): ");
+        p.type = nyType;
+        System.out.println("Typen uppdaterad!");
     }
 }
