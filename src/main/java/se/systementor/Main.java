@@ -100,5 +100,12 @@ public class Main {
         Type nyType = InputHelper.readType(scanner, "Ny typ (FIRE, WATER, GRASS, ELECTRIC, NORMAL): ");
         p.type = nyType;
         System.out.println("Typen uppdaterad!");
+
+        int nyttHp = InputHelper.readIntInRange(scanner, "Nytt max HP: ", 1, 1000);
+        p.maxHp = nyttHp;
+        if (p.currentHp > p.maxHp) {
+            p.currentHp = p.maxHp;
+        }
+        System.out.println("HP uppdaterat!");
     }
 }
