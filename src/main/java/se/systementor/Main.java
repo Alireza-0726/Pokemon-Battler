@@ -27,7 +27,7 @@ public class Main {
             switch (choice) {
                 case 1 -> visaAlla (pokedex);
                 case 2 -> laggTill(scanner, pokedex);
-                case 3 -> System.out.println("Den här funktionen är inte färdig än");
+                case 3 -> redigera(scanner, pokedex);
                 case 4 -> taBort(scanner, pokedex);
                 case 5 -> System.out.println("Den här funktionen är inte färdig än");
                 case 6 -> System.out.println("Den här funktionen är inte färdig än");
@@ -81,5 +81,20 @@ public class Main {
         String namn = pokedex.get(index).name;
         pokedex.remove(index);
         System.out.println(namn + " togs bort från pokedexen.");
+    }
+
+    public static void redigera(Scanner scanner, ArrayList<Pokemon> pokedex) {
+        if (pokedex.isEmpty()) {
+            System.out.println("Inget att redigera, pokedexen är tom.");
+            return;
+        }
+        System.out.println("--- Redigera pokemon ---");
+        int index = InputHelper.valjPokemonIndex(scanner, pokedex);
+        Pokemon p = pokedex.get(index);
+
+        System.out.println("Vald pokemon: " + p.toDisplayString());
+        String nyttNamn = InputHelper.readNonEmptyString(scanner, "Nytt namn: ");
+        p.name = nyttNamn;
+        System.out.println("Namnet uppdaterat!");
     }
 }
