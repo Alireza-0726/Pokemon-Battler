@@ -70,8 +70,9 @@ public class Main {
         String name = InputHelper.readNonEmptyString(scanner, "Ange namn på pokemonen: ");
         Type type = InputHelper.readType(scanner, "Ange typ (FIRE, WATER, GRASS, ELECTRIC, NORMAL): ");
         int maxHp = InputHelper.readIntInRange(scanner, "Ange maximalt HP: ", 1, 1000);
+        int speed = InputHelper.readIntInRange(scanner, "Ange speed (1-200): ", 1, 200);
 
-        Pokemon p = new Pokemon(name, type, maxHp);
+        Pokemon p = new Pokemon(name, type, maxHp, speed);
 
         int numAttacks = InputHelper.readIntInRange(scanner, "Hur många attacker (1-4)? ", 1, 4);
         for (int i = 0; i < numAttacks; i++) {
@@ -153,32 +154,32 @@ public class Main {
     public static void seedData(ArrayList<Pokemon> pokedex) {
         pokedex.clear();
 
-        Pokemon p1 = new Pokemon("Charizard", Type.FIRE, 78);
+        Pokemon p1 = new Pokemon("Charizard", Type.FIRE, 78, 100);
         p1.attacks.add(new Attack("Flamethrower", 90, 100, Type.FIRE));
         p1.attacks.add(new Attack("Wing Attack", 60, 100, Type.NORMAL));
         pokedex.add(p1);
 
-        Pokemon p2 = new Pokemon("Blastoise", Type.WATER, 79);
+        Pokemon p2 = new Pokemon("Blastoise", Type.WATER, 79, 78);
         p2.attacks.add(new Attack("Hydro Pump", 110, 80, Type.WATER));
         p2.attacks.add(new Attack("Bite", 60, 100, Type.NORMAL));
         pokedex.add(p2);
 
-        Pokemon p3 = new Pokemon("Venusaur", Type.GRASS, 80);
+        Pokemon p3 = new Pokemon("Venusaur", Type.GRASS, 80, 80);
         p3.attacks.add(new Attack("Solar Beam", 120, 85, Type.GRASS));
         p3.attacks.add(new Attack("Vine Whip", 45, 100, Type.GRASS));
         pokedex.add(p3);
 
-        Pokemon p4 = new Pokemon("Pikachu", Type.ELECTRIC, 35);
+        Pokemon p4 = new Pokemon("Pikachu", Type.ELECTRIC, 35, 90);
         p4.attacks.add(new Attack("Thunderbolt", 90, 100, Type.ELECTRIC));
         p4.attacks.add(new Attack("Quick Attack", 40, 100, Type.NORMAL));
         pokedex.add(p4);
 
-        Pokemon p5 = new Pokemon("Snorlax", Type.NORMAL, 160);
+        Pokemon p5 = new Pokemon("Snorlax", Type.NORMAL, 160, 30);
         p5.attacks.add(new Attack("Body Slam", 85, 100, Type.NORMAL));
         p5.attacks.add(new Attack("Rest", 1, 100, Type.NORMAL));
         pokedex.add(p5);
 
-        Pokemon p6 = new Pokemon("Gengar", Type.NORMAL, 60);
+        Pokemon p6 = new Pokemon("Gengar", Type.NORMAL, 60, 110);
         p6.attacks.add(new Attack("Shadow Ball", 80, 100, Type.NORMAL));
         p6.attacks.add(new Attack("Lick", 30, 100, Type.NORMAL));
         pokedex.add(p6);
@@ -193,6 +194,7 @@ public class Main {
             sb.append(p.type).append(";");
             sb.append(p.maxHp).append(";");
             sb.append(p.currentHp).append(";");
+            sb.append(p.speed).append(";");
 
             for (int i  = 0; i < p.attacks.size(); i++) {
                 Attack a = p.attacks.get(i);
@@ -230,19 +232,20 @@ public class Main {
                 if (line.isBlank()) continue;
 
                 String[] fields = line.split(";");
-                if (fields.length !=5) continue;
+                if (fields.length !=6) continue;
 
                 try {
                     String name = fields[0];
                     Type type = Type.valueOf(fields[1]);
                     int maxHp = Integer.parseInt(fields[2]);
                     int currentHp = Integer.parseInt(fields[3]);
+                    int speed = Integer.parseInt(fields[4]);
 
-                    Pokemon p = new Pokemon(name, type, maxHp);
+                    Pokemon p = new Pokemon(name, type, maxHp, speed);
                     p.currentHp = currentHp;
 
-                    if (!fields[4].isEmpty()) {
-                        String[] attacks = fields[4].split("\\|");
+                    if (!fields[5].isEmpty()) {
+                        String[] attacks = fields[5].split("\\|");
                         for (String atk : attacks) {
                             String[] atkFields = atk.split(",");
                             if (atkFields.length !=4) continue;

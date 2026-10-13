@@ -7,13 +7,15 @@ public class Pokemon {
     public Type type;
     public int maxHp;
     public int currentHp;
+    public int speed;
     public ArrayList<Attack> attacks;
 
-    public Pokemon(String name, Type type, int  maxHp) {
+    public Pokemon(String name, Type type, int  maxHp, int speed) {
         this.name = name;
         this.type = type;
         this.maxHp = maxHp;
         this.currentHp = maxHp;
+        this.speed = speed;
         this.attacks = new ArrayList<>();
     }
 
