@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.io.IOException;
+import java.util.Random;
 
 
 public class Main {
@@ -29,9 +30,10 @@ public class Main {
             System.out.println("5. Spara till textfil");
             System.out.println("6. Läs in från textfil");
             System.out.println("7. Återställ standardpokedex");
-            System.out.println("8. Avsluta programmet");
+            System.out.println("8. Starta strid");
+            System.out.println("9. Avsluta programmet");
 
-            int choice = InputHelper.readIntInRange(scanner, "Ditt menyval: ",1, 8);
+            int choice = InputHelper.readIntInRange(scanner, "Ditt menyval: ",1, 9);
 
             switch (choice) {
                 case 1 -> showAll(pokedex);
@@ -44,7 +46,8 @@ public class Main {
                     seedData(pokedex);
                     System.out.println("Standardpokedexen återställd!");
                 }
-                case 8 -> {
+                case 8 -> startBattle(scanner, pokedex);
+                case 9 -> {
                     save(pokedex);
                     System.out.println("Hej då, välkommen åter!");
                     running = false;
@@ -95,6 +98,46 @@ public class Main {
         String name = pokedex.get(index).name;
         pokedex.remove(index);
         System.out.println(name + " togs bort från pokedexen.");
+    }
+
+    public static void startBattle(Scanner scanner, ArrayList<Pokemon> pokedex) {
+        if (pokedex.isEmpty()) {
+            System.out.println("Du har inga pokemons att strida med.");
+            return;
+        }
+        if (pokedex.size() < 2) {
+            System.out.println("Du behöver minst 2 pokemons för att strida.");
+            return;
+        }
+
+        System.out.println("--- Välj din Pokemon ---");
+        int playerIndex = InputHelper.selectPokemonIndex(scanner, pokedex);
+        Pokemon player = pokedex.get(playerIndex);
+
+        if (player.currentHp <= 0) {
+            System.out.println(player.name + " har 0 HP och kan inte strida!");
+            return;
+        }
+        if (player.attacks.isEmpty()) {
+            System.out.println(player.name + " har inga attacker och kan inte strida!");
+            return;
+        }
+        Random random = new Random();
+        Pokemon enemy;
+        do {
+            enemy =  pokedex.get(random.nextInt(pokedex.size()));
+        } while (enemy == player);
+
+        if (enemy.currentHp <= 0 || enemy.attacks.isEmpty()) {
+            System.out.println(enemy.name + " kan inte strida just nu. Försök igen.");
+            return;
+        }
+
+        Battle battle = new Battle(player, enemy, scanner);
+        boolean won = battle.start();
+
+        player.currentHp = player.maxHp;
+        enemy.currentHp = enemy.maxHp;
     }
 
     public static void edit(Scanner scanner, ArrayList<Pokemon> pokedex) {
