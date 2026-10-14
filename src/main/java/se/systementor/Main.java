@@ -122,6 +122,10 @@ public class Main {
         }
         System.out.println("HP uppdaterat!");
 
+        int newSpeed = InputHelper.readIntInRange(scanner, "Ny speed (1-200): ", 1, 200);
+        p.speed = newSpeed;
+        System.out.println("Speed uppdaterat!");
+
         System.out.println("Nuvarande attacker: " + p.attacks.size());
         if (p.attacks.size() < 4) {
             String answer = InputHelper.readNonEmptyString(scanner, "Vill du lägga till en attack? (ja/nej):  ");

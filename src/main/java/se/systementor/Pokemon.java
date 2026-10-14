@@ -21,6 +21,7 @@ public class Pokemon {
 
     public String toDisplayString() {
         return name + " (" + type + ") HP: " + currentHp + "/" + maxHp
+                + " - Speed:" + speed
                 + " - " + attacks.size() + " attacker";
     }
 }
