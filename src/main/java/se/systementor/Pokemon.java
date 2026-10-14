@@ -31,9 +31,16 @@ public class Pokemon {
         this.attacks = new ArrayList<>();
     }
 
+    public void takeDamage(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Skada kan inte vara negativ");
+        }
+        currentHp = Math.max(0, currentHp - amount);
+    }
+
     public String toDisplayString() {
         return name + " (" + type + ") HP: " + currentHp + "/" + maxHp
-                + " - Speed:" + speed
+                + " - Speed: " + speed
                 + " - " + attacks.size() + " attacker";
     }
 }
