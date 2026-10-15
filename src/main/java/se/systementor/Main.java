@@ -360,9 +360,9 @@ public class Main {
                 wins = Integer.parseInt(fields[0]);
                 losses = Integer.parseInt(fields[1]);
             }
-            return;
+
         } catch (IOException e) {
-            System.out.println("Kunde inte spara statistik: " + e.getMessage());
+            System.out.println("Kunde inte läsa statistik: " + e.getMessage());
         } catch (NumberFormatException e) {
             System.out.println("Trasig statistikfil, startar från 0.");
             wins = 0;
@@ -371,7 +371,7 @@ public class Main {
     }
 
     public static void showStats() {
-        System.out.println("--- Stridresultat ---");
+        System.out.println("--- Stridsresultat ---");
         System.out.println("Vinster: " + wins);
         System.out.println("Förluster: " + losses);
 
@@ -380,7 +380,7 @@ public class Main {
             double ratio = (double) wins / total * 100;
             System.out.printf("Vinstprocent: %.1f%%%n", ratio);
         } else {
-            System.out.println("Inga strid spelade ännu");
+            System.out.println("Inga strider spelade ännu.");
         }
     }
 }
