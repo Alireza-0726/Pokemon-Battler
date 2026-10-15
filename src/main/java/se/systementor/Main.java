@@ -19,6 +19,7 @@ public class Main {
 
         System.out.println("Hej och välkommen till pokedex!");
         load(pokedex);
+        loadStats();
         if (pokedex.isEmpty()) {
             seedData(pokedex);
             System.out.println("Första körningen, standardpokedex laddat.");
@@ -52,6 +53,7 @@ public class Main {
                 case 8 -> startBattle(scanner, pokedex);
                 case 9 -> {
                     save(pokedex);
+                    saveStats();
                     System.out.println("Hej då, välkommen åter!");
                     running = false;
                 }
@@ -144,6 +146,8 @@ public class Main {
         } else {
             losses++;
         }
+
+        saveStats();
 
         player.currentHp = player.maxHp;
         enemy.currentHp = enemy.maxHp;
