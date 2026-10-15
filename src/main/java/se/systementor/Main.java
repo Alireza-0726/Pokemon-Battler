@@ -145,18 +145,19 @@ public class Main {
         }
 
         Battle battle = new Battle(player, enemy, scanner);
-        boolean won = battle.start();
 
-        if (won) {
-            wins++;
-        } else {
-            losses++;
+        try {
+            boolean won = battle.start();
+            if (won) {
+                wins++;
+            } else {
+                losses++;
+            }
+            saveStats();
+        } finally {
+            player.currentHp = player.maxHp;
+            enemy.currentHp = enemy.maxHp;
         }
-
-        saveStats();
-
-        player.currentHp = player.maxHp;
-        enemy.currentHp = enemy.maxHp;
     }
 
     public static void edit(Scanner scanner, ArrayList<Pokemon> pokedex) {
