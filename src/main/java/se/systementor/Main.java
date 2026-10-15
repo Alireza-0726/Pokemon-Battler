@@ -25,47 +25,51 @@ public class Main {
             System.out.println("Första körningen, standardpokedex laddat.");
         }
 
-        while (running) {
-            System.out.println("\n---- HUVUDMENY ----");
-            System.out.println("1. Visa hela pokedexen");
-            System.out.println("2. Skapa ny pokemon");
-            System.out.println("3. Ändra info om pokemon");
-            System.out.println("4. Radera pokemon");
-            System.out.println("5. Spara till textfil");
-            System.out.println("6. Läs in från textfil");
-            System.out.println("7. Återställ standardpokedex");
-            System.out.println("8. Starta strid");
-            System.out.println("9. Visa stridresultatet");
-            System.out.println("10. Avsluta programmet");
+        try {
+            while (running) {
+                System.out.println("\n---- HUVUDMENY ----");
+                System.out.println("1. Visa hela pokedexen");
+                System.out.println("2. Skapa ny pokemon");
+                System.out.println("3. Ändra info om pokemon");
+                System.out.println("4. Radera pokemon");
+                System.out.println("5. Spara till textfil");
+                System.out.println("6. Läs in från textfil");
+                System.out.println("7. Återställ standardpokedex");
+                System.out.println("8. Starta strid");
+                System.out.println("9. Visa stridresultatet");
+                System.out.println("10. Avsluta programmet");
 
-            int choice = InputHelper.readIntInRange(scanner, "Ditt menyval: ",1, 10);
+                int choice = InputHelper.readIntInRange(scanner, "Ditt menyval: ", 1, 10);
 
-            switch (choice) {
-                case 1 -> showAll(pokedex);
-                case 2 -> add(scanner, pokedex);
-                case 3 -> edit(scanner, pokedex);
-                case 4 -> remove(scanner, pokedex);
-                case 5 -> save(pokedex);
-                case 6 -> load(pokedex);
-                case 7 -> {
-                    seedData(pokedex);
-                    System.out.println("Standardpokedexen återställd!");
-                }
-                case 8 -> startBattle(scanner, pokedex);
-                case 9 -> showStats();
-                case 10 -> {
-                    save(pokedex);
-                    saveStats();
-                    System.out.println("Hej då, välkommen åter!");
-                    running = false;
+                switch (choice) {
+                    case 1 -> showAll(pokedex);
+                    case 2 -> add(scanner, pokedex);
+                    case 3 -> edit(scanner, pokedex);
+                    case 4 -> remove(scanner, pokedex);
+                    case 5 -> save(pokedex);
+                    case 6 -> load(pokedex);
+                    case 7 -> {
+                        seedData(pokedex);
+                        System.out.println("Standardpokedexen återställd!");
+                    }
+                    case 8 -> startBattle(scanner, pokedex);
+                    case 9 -> showStats();
+                    case 10 -> running = false;
                 }
             }
 
+        } catch (java.util.NoSuchElementException e) {
+            System.out.println();
+            System.out.println("Ingen mer input. Avslutar och sparar.");
         }
+
+        save(pokedex);
+        saveStats();
+        System.out.println("Hej då, välkommen åter!");
         scanner.close();
     }
 
-    public static void showAll  (ArrayList<Pokemon> pokedex) {
+    public static void showAll(ArrayList<Pokemon> pokedex) {
         if (pokedex.isEmpty()) {
             System.out.println("Pokedexen har inga pokemons än.");
             return;
@@ -132,7 +136,7 @@ public class Main {
         Random random = new Random();
         Pokemon enemy;
         do {
-            enemy =  pokedex.get(random.nextInt(pokedex.size()));
+            enemy = pokedex.get(random.nextInt(pokedex.size()));
         } while (enemy == player);
 
         if (enemy.currentHp <= 0 || enemy.attacks.isEmpty()) {
@@ -208,7 +212,7 @@ public class Main {
                 p.attacks.remove(attackIndex);
                 System.out.println(removedName + " togs bort.");
             }
-        } else  {
+        } else {
             System.out.println("Pokemonen måste ha minst 1 attack.");
         }
     }
@@ -258,7 +262,7 @@ public class Main {
             sb.append(p.currentHp).append(";");
             sb.append(p.speed).append(";");
 
-            for (int i  = 0; i < p.attacks.size(); i++) {
+            for (int i = 0; i < p.attacks.size(); i++) {
                 Attack a = p.attacks.get(i);
                 if (i > 0) sb.append("|");
                 sb.append(a.name).append(",")
@@ -294,7 +298,7 @@ public class Main {
                 if (line.isBlank()) continue;
 
                 String[] fields = line.split(";");
-                if (fields.length !=6) continue;
+                if (fields.length != 6) continue;
 
                 try {
                     String name = fields[0];
@@ -310,11 +314,11 @@ public class Main {
                         String[] attacks = fields[5].split("\\|");
                         for (String atk : attacks) {
                             String[] atkFields = atk.split(",");
-                            if (atkFields.length !=4) continue;
+                            if (atkFields.length != 4) continue;
 
                             String atkName = atkFields[0];
                             int dmg = Integer.parseInt(atkFields[1]);
-                            int acc =  Integer.parseInt(atkFields[2]);
+                            int acc = Integer.parseInt(atkFields[2]);
                             Type atkType = Type.valueOf(atkFields[3]);
 
                             p.attacks.add(new Attack(atkName, dmg, acc, atkType));
@@ -354,7 +358,8 @@ public class Main {
             if (fields.length == 2) {
                 wins = Integer.parseInt(fields[0]);
                 losses = Integer.parseInt(fields[1]);
-            } return;
+            }
+            return;
         } catch (IOException e) {
             System.out.println("Kunde inte spara statistik: " + e.getMessage());
         } catch (NumberFormatException e) {
@@ -372,7 +377,7 @@ public class Main {
         int total = wins + losses;
         if (total > 0) {
             double ratio = (double) wins / total * 100;
-            System.out.printf("Vinstprocent: %.1f%%%n",  ratio);
+            System.out.printf("Vinstprocent: %.1f%%%n", ratio);
         } else {
             System.out.println("Inga strid spelade ännu");
         }
