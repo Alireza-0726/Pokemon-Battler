@@ -326,4 +326,35 @@ public class Main {
             System.out.println("Kunde inte läsa filen: " + e.getMessage());
         }
     }
+
+    public static void saveStats() {
+        Path path = Path.of("battle_stats.csv");
+        String data = wins + ";" + losses;
+        try {
+            Files.writeString(path, data);
+        } catch (IOException e) {
+            System.out.println("Kunde inte spara statistik: " + e.getMessage());
+        }
+    }
+
+    public static void loadStats() {
+        Path path = Path.of("battle_stats.csv");
+        if (!Files.exists(path)) {
+            return;
+        }
+        try {
+            String data = Files.readString(path).trim();
+            String[] fields = data.split(";");
+            if (fields.length == 2) {
+                wins = Integer.parseInt(fields[0]);
+                losses = Integer.parseInt(fields[1]);
+            } return;
+        } catch (IOException e) {
+            System.out.println("Kunde inte spara statistik: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Trasig statistikfil, startar från 0.");
+            wins = 0;
+            losses = 0;
+        }
+    }
 }
