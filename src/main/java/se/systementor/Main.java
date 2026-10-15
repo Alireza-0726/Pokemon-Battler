@@ -35,9 +35,10 @@ public class Main {
             System.out.println("6. Läs in från textfil");
             System.out.println("7. Återställ standardpokedex");
             System.out.println("8. Starta strid");
-            System.out.println("9. Avsluta programmet");
+            System.out.println("9. Visa stridresultatet");
+            System.out.println("10. Avsluta programmet");
 
-            int choice = InputHelper.readIntInRange(scanner, "Ditt menyval: ",1, 9);
+            int choice = InputHelper.readIntInRange(scanner, "Ditt menyval: ",1, 10);
 
             switch (choice) {
                 case 1 -> showAll(pokedex);
@@ -51,7 +52,8 @@ public class Main {
                     System.out.println("Standardpokedexen återställd!");
                 }
                 case 8 -> startBattle(scanner, pokedex);
-                case 9 -> {
+                case 9 -> showStats();
+                case 10 -> {
                     save(pokedex);
                     saveStats();
                     System.out.println("Hej då, välkommen åter!");
@@ -359,6 +361,20 @@ public class Main {
             System.out.println("Trasig statistikfil, startar från 0.");
             wins = 0;
             losses = 0;
+        }
+    }
+
+    public static void showStats() {
+        System.out.println("--- Stridresultat ---");
+        System.out.println("Vinster: " + wins);
+        System.out.println("Förluster: " + losses);
+
+        int total = wins + losses;
+        if (total > 0) {
+            double ratio = (double) wins / total * 100;
+            System.out.printf("Vinstprocent: %.1f%%%n",  ratio);
+        } else {
+            System.out.println("Inga strid spelade ännu");
         }
     }
 }
