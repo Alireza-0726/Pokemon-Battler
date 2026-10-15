@@ -9,6 +9,9 @@ import java.util.Random;
 
 
 public class Main {
+    static int wins = 0;
+    static int losses = 0;
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         ArrayList<Pokemon> pokedex = new ArrayList<>();
@@ -135,6 +138,12 @@ public class Main {
 
         Battle battle = new Battle(player, enemy, scanner);
         boolean won = battle.start();
+
+        if (won) {
+            wins++;
+        } else {
+            losses++;
+        }
 
         player.currentHp = player.maxHp;
         enemy.currentHp = enemy.maxHp;
