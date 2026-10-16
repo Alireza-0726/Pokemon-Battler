@@ -30,6 +30,11 @@ public class InputHelper {
                 System.out.println("Får inte vara tomt. Försök igen");
                 continue;
             }
+
+            if (input.contains(";") || input.contains(",") ||  input.contains("|")) {
+                System.out.println("Namnet får inte innehålla ; , eller |. Försök igen.");
+                continue;
+            }
             return input;
         }
     }
