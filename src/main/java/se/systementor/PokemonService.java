@@ -67,9 +67,7 @@ public class PokemonService {
 
         int newHp = InputHelper.readIntInRange(scanner, "Nytt max HP: ", 1, 1000);
         p.maxHp = newHp;
-        if (p.currentHp > p.maxHp) {
-            p.currentHp = p.maxHp;
-        }
+        p.currentHp = p.maxHp;
         System.out.println("HP uppdaterat!");
 
         int newSpeed = InputHelper.readIntInRange(scanner, "Ny speed (1-200): ", 1, 200);
