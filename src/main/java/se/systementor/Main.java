@@ -2,9 +2,6 @@ package se.systementor;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.io.IOException;
 import java.util.Random;
 
 
@@ -18,8 +15,10 @@ public class Main {
         boolean running = true;
 
         System.out.println("Hej och välkommen till pokedex!");
-        load(pokedex);
-        loadStats();
+        Storage.loadPokedex(pokedex);
+        int [] stats = Storage.loadStats();
+        wins = stats[0];
+        losses = stats[1];
         if (pokedex.isEmpty()) {
             seedData(pokedex);
             System.out.println("Första körningen, standardpokedex laddat.");
@@ -46,8 +45,8 @@ public class Main {
                     case 2 -> add(scanner, pokedex);
                     case 3 -> edit(scanner, pokedex);
                     case 4 -> remove(scanner, pokedex);
-                    case 5 -> save(pokedex);
-                    case 6 -> load(pokedex);
+                    case 5 -> Storage.savePokedex(pokedex);
+                    case 6 -> Storage.loadPokedex(pokedex);
                     case 7 -> {
                         seedData(pokedex);
                         System.out.println("Standardpokedexen återställd!");
@@ -63,8 +62,8 @@ public class Main {
             System.out.println("Ingen mer input. Avslutar och sparar.");
         }
 
-        save(pokedex);
-        saveStats();
+        Storage.savePokedex(pokedex);
+        Storage.saveStats(wins, losses);
         System.out.println("Hej då, välkommen åter!");
         scanner.close();
     }
@@ -153,7 +152,7 @@ public class Main {
             } else {
                 losses++;
             }
-            saveStats();
+            Storage.saveStats(wins, losses);
         } finally {
             player.currentHp = player.maxHp;
             enemy.currentHp = enemy.maxHp;
@@ -252,123 +251,6 @@ public class Main {
         pokedex.add(p6);
     }
 
-    public static void save(ArrayList<Pokemon> pokedex) {
-        Path path = Path.of("pokedex.csv");
-        StringBuilder sb = new StringBuilder();
-
-        for (Pokemon p : pokedex) {
-            sb.append(p.name).append(";");
-            sb.append(p.type).append(";");
-            sb.append(p.maxHp).append(";");
-            sb.append(p.currentHp).append(";");
-            sb.append(p.speed).append(";");
-
-            for (int i = 0; i < p.attacks.size(); i++) {
-                Attack a = p.attacks.get(i);
-                if (i > 0) sb.append("|");
-                sb.append(a.name).append(",")
-                        .append(a.baseDamage).append(",")
-                        .append(a.accuracy).append(",")
-                        .append(a.type);
-
-            }
-            sb.append("\n");
-        }
-
-        try {
-            Files.writeString(path, sb.toString());
-            System.out.println("Sparat till: " + path.toAbsolutePath());
-        } catch (IOException e) {
-            System.out.println("Kunde inte spara: " + e.getMessage());
-        }
-    }
-
-    public static void load(ArrayList<Pokemon> pokedex) {
-        Path path = Path.of("pokedex.csv");
-
-        if (!Files.exists(path)) {
-            System.out.println("Ingen sparad fil hittades.");
-            return;
-        }
-
-        try {
-            ArrayList<String> lines = new ArrayList<>(Files.readAllLines(path));
-            pokedex.clear();
-
-            for (String line : lines) {
-                if (line.isBlank()) continue;
-
-                String[] fields = line.split(";");
-                if (fields.length != 6) continue;
-
-                try {
-                    String name = fields[0];
-                    Type type = Type.valueOf(fields[1]);
-                    int maxHp = Integer.parseInt(fields[2]);
-                    int currentHp = Integer.parseInt(fields[3]);
-                    int speed = Integer.parseInt(fields[4]);
-
-                    Pokemon p = new Pokemon(name, type, maxHp, speed);
-                    p.currentHp = currentHp;
-
-                    if (!fields[5].isEmpty()) {
-                        String[] attacks = fields[5].split("\\|");
-                        for (String atk : attacks) {
-                            String[] atkFields = atk.split(",");
-                            if (atkFields.length != 4) continue;
-
-                            String atkName = atkFields[0];
-                            int dmg = Integer.parseInt(atkFields[1]);
-                            int acc = Integer.parseInt(atkFields[2]);
-                            Type atkType = Type.valueOf(atkFields[3]);
-
-                            p.attacks.add(new Attack(atkName, dmg, acc, atkType));
-                        }
-                    }
-
-                    pokedex.add(p);
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Hoppar över trasig rad: " + line);
-                }
-            }
-
-            System.out.println("Laddat " + pokedex.size() + " pokemons från fil.");
-        } catch (IOException e) {
-            System.out.println("Kunde inte läsa filen: " + e.getMessage());
-        }
-    }
-
-    public static void saveStats() {
-        Path path = Path.of("battle_stats.csv");
-        String data = wins + ";" + losses;
-        try {
-            Files.writeString(path, data);
-        } catch (IOException e) {
-            System.out.println("Kunde inte spara statistik: " + e.getMessage());
-        }
-    }
-
-    public static void loadStats() {
-        Path path = Path.of("battle_stats.csv");
-        if (!Files.exists(path)) {
-            return;
-        }
-        try {
-            String data = Files.readString(path).trim();
-            String[] fields = data.split(";");
-            if (fields.length == 2) {
-                wins = Integer.parseInt(fields[0]);
-                losses = Integer.parseInt(fields[1]);
-            }
-
-        } catch (IOException e) {
-            System.out.println("Kunde inte läsa statistik: " + e.getMessage());
-        } catch (NumberFormatException e) {
-            System.out.println("Trasig statistikfil, startar från 0.");
-            wins = 0;
-            losses = 0;
-        }
-    }
 
     public static void showStats() {
         System.out.println("--- Stridsresultat ---");
